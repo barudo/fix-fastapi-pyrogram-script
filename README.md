@@ -27,13 +27,44 @@ So I want to fix #2.
 
 ## Files
 
-- `attachments/api.py` - original FastAPI script
-- `attachments/telegram_util.py` - original Pyrogram wrapper
-- `attachments/api_fixed.py` - fixed FastAPI script
-- `attachments/telegram_util_fixed.py` - fixed Pyrogram wrapper
+- `attachments/api.py` - fixed FastAPI script
+- `attachments/telegram_util.py` - fixed Pyrogram wrapper
+- `attachments/api_fixed.py` - alternate copy of the fixed FastAPI script
+- `attachments/telegram_util_fixed.py` - alternate copy of the fixed Pyrogram wrapper
 - `scripts/generate_session_string.py` - helper for creating a Pyrogram session string for Render
 - `render.yaml` - Render deployment configuration
 - `requirements.txt` - Python dependencies
+
+## Testing Notes
+
+The code can be syntax-checked without Telegram credentials:
+
+```bash
+python3 -m py_compile attachments/api.py attachments/telegram_util.py scripts/generate_session_string.py
+```
+
+Full runtime testing must be done by someone with valid Telegram credentials. The app requires:
+
+```text
+TELEGRAM_API_ID
+TELEGRAM_API_HASH
+```
+
+For hosted environments such as Render, also provide:
+
+```text
+TELEGRAM_SESSION_STRING
+```
+
+Expected test results:
+
+- Starting the API should connect the Pyrogram client without startup errors.
+- `GET /test_telegram` should return a JSON array of recent chat message text.
+- Sending a new message to a Telegram chat visible to the logged-in account should call `handle_message`.
+- The new message should be printed and logged by the server process.
+- Stopping the API should cleanly stop the Pyrogram client.
+
+Without real credentials and an authorized Telegram session, the live connection, chat history endpoint, and incoming message handler cannot be verified locally.
 
 ## Local Setup
 
@@ -56,7 +87,7 @@ Run the fixed app:
 
 ```bash
 cd attachments
-uvicorn api_fixed:app --host 0.0.0.0 --port 8000
+uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
 Test the endpoint:
