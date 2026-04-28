@@ -2,7 +2,9 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
-from telegram_util_fixed import TelegramClient
+
+from telegram_util import TelegramClient
+
 
 tg_client = TelegramClient('mbark444')
 

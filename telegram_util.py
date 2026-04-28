@@ -20,6 +20,7 @@ class TelegramClient:
         api_id = os.getenv('TELEGRAM_API_ID')
         api_hash = os.getenv('TELEGRAM_API_HASH')
         session_string = os.getenv('TELEGRAM_SESSION_STRING')
+
         if not api_id or not api_hash:
             raise RuntimeError(
                 'TELEGRAM_API_ID and TELEGRAM_API_HASH must be set before starting Telegram'

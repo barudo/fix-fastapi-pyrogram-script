@@ -27,10 +27,10 @@ So I want to fix #2.
 
 ## Files
 
-- `attachments/api.py` - fixed FastAPI script
-- `attachments/telegram_util.py` - fixed Pyrogram wrapper
-- `attachments/api_fixed.py` - alternate copy of the fixed FastAPI script
-- `attachments/telegram_util_fixed.py` - alternate copy of the fixed Pyrogram wrapper
+- `attachments/api.py` - original FastAPI script provided for reference
+- `attachments/telegram_util.py` - original Pyrogram wrapper provided for reference
+- `api.py` - fixed FastAPI script
+- `telegram_util.py` - fixed Pyrogram wrapper
 - `scripts/generate_session_string.py` - helper for creating a Pyrogram session string for Render
 - `render.yaml` - Render deployment configuration
 - `requirements.txt` - Python dependencies
@@ -40,7 +40,7 @@ So I want to fix #2.
 The code can be syntax-checked without Telegram credentials:
 
 ```bash
-python3 -m py_compile attachments/api.py attachments/telegram_util.py scripts/generate_session_string.py
+python3 -m py_compile api.py telegram_util.py scripts/generate_session_string.py
 ```
 
 Full runtime testing must be done by someone with valid Telegram credentials. The app requires:
@@ -86,7 +86,6 @@ pip install -r requirements.txt
 Run the fixed app:
 
 ```bash
-cd attachments
 uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
@@ -121,7 +120,7 @@ TELEGRAM_SESSION_STRING=the_printed_session_string
 The Render start command is defined in `render.yaml`:
 
 ```bash
-cd attachments && uvicorn api_fixed:app --host 0.0.0.0 --port $PORT
+uvicorn api:app --host 0.0.0.0 --port $PORT
 ```
 
 After deployment, test:
